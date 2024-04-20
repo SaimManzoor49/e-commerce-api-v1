@@ -2,6 +2,7 @@ require("dotenv").config()
 import express from 'express'
 import { ApolloServer } from '@apollo/server'
 import { expressMiddleware } from "@apollo/server/express4"
+import connectDB from './db'
 
 async function init() {
 
@@ -26,10 +27,13 @@ async function init() {
         res.json({ message: "server is up and running" })
     })
 
-    await gqlServer.start()
-    app.use("/graphql", expressMiddleware(gqlServer))
-    app.listen(PORT, () => {
-        console.log('Server is listning on PORT: ', PORT)
+    await connectDB().then(async()=>{
+
+        await gqlServer.start()
+        app.use("/graphql", expressMiddleware(gqlServer))
+        app.listen(PORT, () => {
+            console.log('Server is listning on PORT: ', PORT)
+        })
     })
 
 }
