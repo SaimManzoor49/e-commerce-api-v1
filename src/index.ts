@@ -3,18 +3,17 @@ import express from 'express'
 import { ApolloServer } from '@apollo/server'
 import { expressMiddleware } from "@apollo/server/express4"
 import connectDB from './db'
+import typeDefs from './utils/getGqlTypes'
 
 async function init() {
 
-
     const app = express()
     const gqlServer = new ApolloServer({
-        typeDefs: `type Query{
-            hello:String
-        }`,
+        typeDefs,
         resolvers: {
             Query:{
-                hello:()=>"Hello World!"
+                hello:()=>"Hello World!",
+                say:()=>"Hello World!"
             }
         },
     })
