@@ -1,5 +1,7 @@
 require("dotenv").config()
 import express from 'express'
+import cors from 'cors'
+import cookieParser from 'cookie-parser'
 import { ApolloServer } from '@apollo/server'
 import { expressMiddleware } from "@apollo/server/express4"
 import connectDB from './db'
@@ -22,6 +24,8 @@ async function init() {
 
         // Middlewares
         app.use(express.json())
+        app.use(cors());
+        app.use(cookieParser());
 
 
         // Restful Routes

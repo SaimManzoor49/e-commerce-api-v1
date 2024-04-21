@@ -1,0 +1,6 @@
+{
+    "ext": "ts,js,gql,graphql,html,mjs,json",
+    "ignore": ["node_modules"]
+    
+  }
+  
