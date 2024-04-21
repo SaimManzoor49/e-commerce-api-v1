@@ -1,3 +1,3 @@
 export const Query = {
-    say:()=>"Hello World"
+    say:()=>"Hello World!"
     }

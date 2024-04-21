@@ -1,3 +1,3 @@
 export const Query = {
-hello:()=>"Hello World"
+    hello:()=>"Hello World!",
 }

@@ -1,30 +1,42 @@
 import fs from 'fs';
 import path from 'path';
 
-interface ResolverObject {
-    [key: string]: any;
+interface Resolvers {
+  [key: string]: any;
 }
 
-function getResolvers(resolverFolderPath: string): ResolverObject {
-    const resolvers: ResolverObject = {};
+const getResolvers = (folderPath: string): Resolvers => {
+  const resolvers: Resolvers = {};
 
-    const processFolder = (folderPath: string) => {
-        fs.readdirSync(folderPath).forEach(file => {
-            const filePath = path.join(folderPath, file);
-            if (fs.statSync(filePath).isFile() && path.extname(filePath) === '.ts') {
-                const resolver = require(filePath);
-                Object.assign(resolvers, resolver);
-            } else if (fs.statSync(filePath).isDirectory()) {
-                processFolder(filePath);
-            }
+  const readFiles = (dir: string): void => {
+    fs.readdirSync(dir).forEach(file => {
+      const filePath = path.join(dir, file);
+      const stat = fs.statSync(filePath);
+
+      if (stat.isDirectory()) {
+        readFiles(filePath);
+      } else if (file.endsWith('.js') || file.endsWith('.ts')) {
+        const module = require(filePath);
+        const keys = Object.keys(module);
+
+        keys.forEach(key => {
+          if (typeof module[key] === 'object') {
+            resolvers[key] = { ...resolvers[key], ...module[key] };
+          }
         });
-    };
+      }
+    });
+  };
 
-    processFolder(resolverFolderPath);
+  readFiles(folderPath);
 
-    return resolvers;
-}
+  return resolvers;
+};
 
+// Usage example:
 const resolverFolderPath = path.join(__dirname, '../graphql/resolvers/');
-const allResolvers = getResolvers(resolverFolderPath);
-console.log(allResolvers);
+const resolvers = getResolvers(resolverFolderPath);
+
+export default resolvers
+
+
