@@ -1,6 +1,10 @@
 type Query {
-  hello: String
-}
-type Query {
+  hello: String,
   say: String
 }
+
+
+type Mutation{
+  login:String
+}
+
