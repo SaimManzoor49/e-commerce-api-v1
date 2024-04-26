@@ -3,6 +3,7 @@ import express from 'express'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import { ApolloServer } from '@apollo/server'
+
 import { expressMiddleware } from "@apollo/server/express4"
 import connectDB from './db'
 import typeDefs from './utils/getGqlTypes'
@@ -14,17 +15,22 @@ async function init() {
 
     try {
 
+
         const app = express()
+
         const gqlServer = new ApolloServer({
             typeDefs,
             resolvers,
+         
 
         })
 
 
         // Middlewares
         app.use(express.json())
-        app.use(cors());
+        app.use(cors({
+            credentials: true
+        }));
         app.use(cookieParser());
 
 
