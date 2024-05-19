@@ -23,7 +23,7 @@ async function init() {
         const gqlServer = new ApolloServer({
             typeDefs,
             resolvers,
-            introspection: !isProduction, // Enable introspection in non-production environments
+            introspection: true, // Enable introspection in non-production environments
             // playground: !isProduction 
 
         })
