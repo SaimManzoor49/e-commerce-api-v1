@@ -45,7 +45,7 @@ async function init() {
         // Middlewares
         app.use(express.json())
         app.use(cors({
-            origin: ["http://localhost:3000", "*"],
+            origin: ["http://localhost:3000","https://swaggy-e-comm.vercel.app", "*"],
             credentials: true
         }));
         app.use(cookieParser());

@@ -8,7 +8,7 @@
     "dev": "concurrently \"npm run codegen\" \"nodemon --exec ts-node ./src/index.ts\"",
     "build": "npx graphql-codegen --config ./src/codegen.ts && npx tsc",
     "start": "node ./build/index",
-    "codegen": "graphql-codegen --config ./src/codegen.ts --watch"
+    "codegen": "graphql-codegen --watch --config ./src/codegen.ts"
   },
   "keywords": [],
   "author": "",
