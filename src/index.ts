@@ -18,11 +18,13 @@ async function init() {
 
 
         const app = express()
+        const isProduction = process.env.NODE_ENV === 'production';
 
         const gqlServer = new ApolloServer({
             typeDefs,
             resolvers,
-
+            introspection: !isProduction, // Enable introspection in non-production environments
+            // playground: !isProduction 
 
         })
 
