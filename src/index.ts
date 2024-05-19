@@ -35,7 +35,10 @@ async function init() {
         }));
         app.use(cookieParser());
 
-
+        // index route
+        app.get('/', (req, res) => {
+            res.json({ message: "Hello World!!!" })
+        })
         // Restful Routes
         app.get('/health-check', (req, res) => {
             res.json({ message: "server is up and running" })
