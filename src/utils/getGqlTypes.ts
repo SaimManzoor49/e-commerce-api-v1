@@ -25,7 +25,7 @@ function extractGraphQLTypes(folderPath: string): string[] {
 
 const typesFolderPath = path.join(__dirname, '../graphql/types/');
 let gqlTypes = extractGraphQLTypes(typesFolderPath);
-let typeDefs = gqlTypes.join(' ')
+let typeDefinations = gqlTypes.join(' ')
 // console.log(typeDefs); 
 
-export default typeDefs
+export default typeDefinations

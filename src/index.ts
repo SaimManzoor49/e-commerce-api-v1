@@ -6,10 +6,16 @@ import { ApolloServer } from '@apollo/server'
 
 import { expressMiddleware } from "@apollo/server/express4"
 import connectDB from './db'
-import typeDefs from './utils/getGqlTypes'
+// import typeDefs from './utils/getGqlTypes'
 import resolvers from './utils/getGqlResolvers'
 import { verifyJWT } from './middleware/auth.middleware'
+import gql from 'graphql-tag'
+import { buildSubgraphSchema } from '@apollo/subgraph'
 
+import { DocumentNode } from 'graphql'
+import { GraphQLSchemaModule } from '@apollo/subgraph/dist/schema-helper'
+import {readFileSync} from 'fs'
+import typeDefinations from './utils/getGqlTypes'
 const PORT = Number(process.env.PORT) || 8080
 
 async function init() {
@@ -20,11 +26,17 @@ async function init() {
         const app = express()
         const isProduction = process.env.NODE_ENV === 'production';
 
+       
+        const typeDefs = gql(
+            typeDefinations
+          );
+
         const gqlServer = new ApolloServer({
-            typeDefs,
-            resolvers,
-            introspection: true, // Enable introspection in non-production environments
-            // playground: !isProduction 
+            schema: buildSubgraphSchema([{ typeDefs, resolvers }]),
+            // typeDefs,
+            // resolvers,
+            // schema
+            // introspection: true,
 
         })
 
