@@ -33,6 +33,7 @@ async function init() {
 
         const gqlServer = new ApolloServer({
             schema: buildSubgraphSchema([{ typeDefs, resolvers }]),
+            introspection:true
             // typeDefs,
             // resolvers,
             // schema

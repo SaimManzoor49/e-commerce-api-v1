@@ -34,6 +34,7 @@ function init() {
             const typeDefs = (0, graphql_tag_1.default)(getGqlTypes_1.default);
             const gqlServer = new server_1.ApolloServer({
                 schema: (0, subgraph_1.buildSubgraphSchema)([{ typeDefs, resolvers: getGqlResolvers_1.default }]),
+                introspection: true
                 // typeDefs,
                 // resolvers,
                 // schema

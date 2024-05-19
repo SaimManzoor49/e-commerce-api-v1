@@ -12,7 +12,7 @@ const config = {
             plugins: ["typescript", "typescript-resolvers", "typescript-mongodb", "typescript-document-nodes"]
         },
         "./graphql.schema.json": {
-            plugins: ["introspection"]
+            plugins: ["introspection"],
         }
     }
 };
