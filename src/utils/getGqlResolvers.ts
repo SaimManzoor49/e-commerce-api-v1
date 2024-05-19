@@ -1,12 +1,13 @@
 import fs from 'fs';
 import path from 'path';
+import { Resolvers } from '../generated/graphql';
 
-interface Resolvers {
+interface DynamicResolvers {
   [key: string]: any;
 }
 
 const getResolvers = (folderPath: string): Resolvers => {
-  const resolvers: Resolvers = {};
+  const resolvers: DynamicResolvers = {};
 
   const readFiles = (dir: string): void => {
     fs.readdirSync(dir).forEach(file => {
@@ -30,13 +31,11 @@ const getResolvers = (folderPath: string): Resolvers => {
 
   readFiles(folderPath);
 
-  return resolvers;
+  return resolvers as Resolvers;
 };
 
 // Usage example:
 const resolverFolderPath = path.join(__dirname, '../graphql/resolvers/');
 const resolvers = getResolvers(resolverFolderPath);
 
-export default resolvers
-
-
+export default resolvers;
