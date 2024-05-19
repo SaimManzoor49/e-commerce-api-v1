@@ -8,6 +8,7 @@ import { expressMiddleware } from "@apollo/server/express4"
 import connectDB from './db'
 import typeDefs from './utils/getGqlTypes'
 import resolvers from './utils/getGqlResolvers'
+import { verifyJWT } from './middleware/auth.middleware'
 
 const PORT = Number(process.env.PORT) || 8080
 
@@ -21,7 +22,7 @@ async function init() {
         const gqlServer = new ApolloServer({
             typeDefs,
             resolvers,
-         
+
 
         })
 
@@ -29,6 +30,7 @@ async function init() {
         // Middlewares
         app.use(express.json())
         app.use(cors({
+            origin: ["http://localhost:3000", "*"],
             credentials: true
         }));
         app.use(cookieParser());
@@ -39,12 +41,22 @@ async function init() {
             res.json({ message: "server is up and running" })
         })
 
+        const handleAuth = (req: any, res: any, next: any) => {
+            // console.log(req?.headers)
+            // add route name in if block to protect them // private routes
+            if (req?.body?.operationName == 'GetUser') { // update
+                verifyJWT(req, res, next);
+            } else {
+                // all public 
+                next();
+            }
+        }
         // DB connection
         await connectDB().then(async () => {
 
             // GQL Server
             await gqlServer.start()
-            app.use("/graphql", expressMiddleware(gqlServer))
+            app.use("/graphql", handleAuth, expressMiddleware(gqlServer))
             // HTTP Server
             app.listen(PORT, () => {
                 console.log('Server is listning on PORT: ', PORT)

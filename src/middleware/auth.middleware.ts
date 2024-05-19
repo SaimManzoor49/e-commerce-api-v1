@@ -4,9 +4,10 @@ import { StatusCodes } from "http-status-codes";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { User } from "../model/user.model";
 import { Request } from "express";
+import { ApiResponse } from "../utils/apiResponse";
 
 
-export const verifyJWT = asyncHandler(async (req: Request, res, next) => {
+export const verifyJWT = asyncHandler(async (req: Request, res:any, next) => {
   // const token = req.cookies?.accessToken || req.header("Authorization")?.split("Bearer")[1];
   const token = req.cookies?.accessToken || req.header("Authorization")?.split("Bearer ")[1];
   if (!token)

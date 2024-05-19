@@ -10,6 +10,7 @@ import jwt, { JwtPayload } from 'jsonwebtoken';
 import mongoose from 'mongoose';
 import { validateEmailFormate } from '../../../utils/validateEmail';
 import { UserType } from '../../../types/UserType';
+import cookieParser from 'cookie-parser';
 
 const COOKIE_OPTIONS = {
     httpOnly: true,
@@ -140,15 +141,15 @@ const Mutation = {
                 email: user.email,
                 username: user.username,
             });
-
+            
             user.refreshToken = refreshToken;
             await user.save({ validateBeforeSave: false });
 
             // Assuming you have a method to remove sensitive fields from user
             const sanitizedUser = user.toJSON();
             delete sanitizedUser.password;
-            delete sanitizedUser.refreshToken;
-
+            // delete sanitizedUser.refreshToken;
+            sanitizedUser.accessToken = accessToken
             // manage cookies
             // res.cookie("refreshToken", refreshToken, COOKIE_OPTIONS);
             // res.cookie("accessToken", accessToken, COOKIE_OPTIONS);
@@ -207,6 +208,17 @@ const Mutation = {
     },
     async changePassword(parent: any, args: ChangePasswordArgs, context: any, info: any) {
         // Implementation
+    },
+    async getUserData(parent: any, args: ChangePasswordArgs, context: any, info: any) {
+        const token = args.token
+        const decodedData = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET!) as JwtPayload;
+
+        delete decodedData.iat
+        delete decodedData.exp
+        decodedData.accessToken=token
+        const data = decodedData
+        console.log(decodedData)
+        return new ApiResponse(200,data,"Successfully");
     }
 };
 

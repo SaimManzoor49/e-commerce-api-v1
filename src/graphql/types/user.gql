@@ -2,6 +2,7 @@ type User {
   _id: ID!
   username: String!
   email: String!
+  accessToken: String
   # Exclude password and refreshToken for security reasons
 }
 
@@ -45,4 +46,5 @@ type Mutation {
     newPassword: String!
     confirmPassword: String!
   ): ApiResponse!
+  getUserData(token: String!): ApiResponse
 }
