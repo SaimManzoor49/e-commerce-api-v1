@@ -1,0 +1,50 @@
+type User {
+  _id: ID!
+  username: String!
+  email: String!
+  accessToken: String
+  # Exclude password and refreshToken for security reasons
+}
+
+type ApiResponse {
+  status: Int!
+  data: User
+  message: String!
+}
+
+input RegisterInput {
+  username: String!
+  email: String!
+  password: String!
+}
+
+input LoginInput {
+  email: String
+  username: String
+  password: String!
+}
+
+input ResetPasswordInput {
+  email: String
+  username: String
+}
+
+type Query {
+  # Define queries if any
+  getUser(username: String, email: String, id: String): ApiResponse!
+}
+
+type Mutation {
+  registerUser(input: RegisterInput!): ApiResponse!
+  loginUser(input: LoginInput!): ApiResponse!
+  logoutUser: ApiResponse!
+  refreshAccessToken(refreshToken: String!): ApiResponse!
+  resetPassword(input: ResetPasswordInput!): ApiResponse!
+  resetPasswordVerify(token: String!): String!
+  changePassword(
+    token: String!
+    newPassword: String!
+    confirmPassword: String!
+  ): ApiResponse!
+  getUserData(token: String!): ApiResponse
+}
