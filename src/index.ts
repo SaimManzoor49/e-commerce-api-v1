@@ -2,7 +2,7 @@ require("dotenv").config()
 import express from 'express'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
-import { ApolloServer } from '@apollo/server'
+import { ApolloServer, BaseContext } from '@apollo/server'
 
 import { expressMiddleware } from "@apollo/server/express4"
 import connectDB from './db'
@@ -27,18 +27,13 @@ async function init() {
         const isProduction = process.env.NODE_ENV === 'production';
 
        
-        const typeDefs = gql(
-            typeDefinations
-          );
+        const typeDefs = gql`
+        ${typeDefinations}`;
 
-        const gqlServer = new ApolloServer({
-            schema: buildSubgraphSchema([{ typeDefs, resolvers }]),
+        const gqlServer = new ApolloServer<BaseContext>({
+            typeDefs,
+            resolvers,
             introspection:true
-            // typeDefs,
-            // resolvers,
-            // schema
-            // introspection: true,
-
         })
 
 

@@ -1,0 +1,21 @@
+ type Category {
+    id: ID!
+    name: String!
+    slug: String!
+  }
+
+  type Query {
+    getAllCategories: [Category]!
+    getSingleCategory(slug: String!): Category!
+  }
+
+  type Mutation {
+    addCategory(name: String!): Category!
+    updateCategory(id: ID!, name: String!): Category!
+    deleteCategory(id: ID!): ApiResponse!
+  }
+
+  type ApiResponse {
+    status: Int!
+    message: String!
+  }
