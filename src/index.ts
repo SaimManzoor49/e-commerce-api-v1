@@ -33,16 +33,23 @@ async function init() {
         const gqlServer = new ApolloServer<BaseContext>({
             typeDefs,
             resolvers,
-            introspection:true
-        })
+            introspection:true,
+            // context: async({ req, res }:{ req:any, res:any }) => ({ req, res }),
 
+        })
+        const corsOptions = {
+            origin: [
+                'https://swaggy-api-v1.vercel.app',
+                'https://swaggy-e-comm.vercel.app',
+                'http://localhost:3000',// Add localhost with the appropriate port
+            ],
+            credentials: true, // Allow credentials (cookies, authorization headers, etc.)
+          };
+          
 
         // Middlewares
         app.use(express.json())
-        app.use(cors({
-            origin: ["http://localhost:3000","https://swaggy-e-comm.vercel.app", "*"],
-            credentials: true
-        }));
+        app.use(cors(corsOptions));
         app.use(cookieParser());
 
         // index route
@@ -69,7 +76,9 @@ async function init() {
 
             // GQL Server
             await gqlServer.start()
-            app.use("/graphql", handleAuth, expressMiddleware(gqlServer))
+            app.use("/graphql", handleAuth, expressMiddleware(gqlServer, {
+                context: async ({ req, res }) => ({ req, res }),
+              }))
             // HTTP Server
             app.listen(PORT, () => {
                 console.log('Server is listning on PORT: ', PORT)
