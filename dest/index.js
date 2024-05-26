@@ -35,14 +35,20 @@ function init() {
             const gqlServer = new server_1.ApolloServer({
                 typeDefs,
                 resolvers: getGqlResolvers_1.default,
-                introspection: true
+                introspection: true,
+                // context: async({ req, res }:{ req:any, res:any }) => ({ req, res }),
             });
+            const corsOptions = {
+                origin: [
+                    'https://swaggy-api-v1.vercel.app',
+                    'https://swaggy-e-comm.vercel.app',
+                    'http://localhost:3000', // Add localhost with the appropriate port
+                ],
+                credentials: true, // Allow credentials (cookies, authorization headers, etc.)
+            };
             // Middlewares
             app.use(express_1.default.json());
-            app.use((0, cors_1.default)({
-                origin: ["http://localhost:3000", "https://swaggy-e-comm.vercel.app", "*"],
-                credentials: true
-            }));
+            app.use((0, cors_1.default)(corsOptions));
             app.use((0, cookie_parser_1.default)());
             // index route
             app.get('/', (req, res) => {
@@ -68,7 +74,9 @@ function init() {
             yield (0, db_1.default)().then(() => __awaiter(this, void 0, void 0, function* () {
                 // GQL Server
                 yield gqlServer.start();
-                app.use("/graphql", handleAuth, (0, express4_1.expressMiddleware)(gqlServer));
+                app.use("/graphql", handleAuth, (0, express4_1.expressMiddleware)(gqlServer, {
+                    context: (_a) => __awaiter(this, [_a], void 0, function* ({ req, res }) { return ({ req, res }); }),
+                }));
                 // HTTP Server
                 app.listen(PORT, () => {
                     console.log('Server is listning on PORT: ', PORT);
