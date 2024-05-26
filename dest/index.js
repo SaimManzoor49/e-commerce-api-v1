@@ -23,7 +23,6 @@ const db_1 = __importDefault(require("./db"));
 const getGqlResolvers_1 = __importDefault(require("./utils/getGqlResolvers"));
 const auth_middleware_1 = require("./middleware/auth.middleware");
 const graphql_tag_1 = __importDefault(require("graphql-tag"));
-const subgraph_1 = require("@apollo/subgraph");
 const getGqlTypes_1 = __importDefault(require("./utils/getGqlTypes"));
 const PORT = Number(process.env.PORT) || 8080;
 function init() {
@@ -31,14 +30,12 @@ function init() {
         try {
             const app = (0, express_1.default)();
             const isProduction = process.env.NODE_ENV === 'production';
-            const typeDefs = (0, graphql_tag_1.default)(getGqlTypes_1.default);
+            const typeDefs = (0, graphql_tag_1.default) `
+        ${getGqlTypes_1.default}`;
             const gqlServer = new server_1.ApolloServer({
-                schema: (0, subgraph_1.buildSubgraphSchema)([{ typeDefs, resolvers: getGqlResolvers_1.default }]),
+                typeDefs,
+                resolvers: getGqlResolvers_1.default,
                 introspection: true
-                // typeDefs,
-                // resolvers,
-                // schema
-                // introspection: true,
             });
             // Middlewares
             app.use(express_1.default.json());

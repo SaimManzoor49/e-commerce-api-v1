@@ -1,0 +1,53 @@
+
+  type Product {
+    id: ID!
+    name: String!
+    slug: String!
+    description: String!
+    price: Float!
+    quantity: Int!
+    shipping: Boolean!
+    image: String
+    category: String!
+  }
+
+  type PaginatedProducts {
+    totalItems: Int!
+    products: [Product]!
+    totalPages: Int!
+    next: Int
+    prev: Int
+    pagingCounter: Int!
+    hasPrev: Boolean!
+    hasNext: Boolean!
+  }
+
+  type Query {
+    getAllProducts(page: Int, limit: Int): PaginatedProducts!
+    getSingleProduct(slug: String!): Product!
+    filterProduct(category: String, minPrice: Float, maxPrice: Float): [Product]!
+    searchProducts(keyword: String!): [Product]!
+  }
+
+  type Mutation {
+    createProduct(
+      name: String!
+      description: String!
+      price: Float!
+      quantity: Int!
+      shipping: Boolean!
+      category: String!
+      imageUrl: String!
+    ): Product!
+    updateProduct(
+      id: ID!
+      name: String
+      description: String
+      price: Float
+      quantity: Int
+      shipping: Boolean
+      category: String
+      imageUrl: String
+    ): Product!
+    deleteProduct(id: ID!): ApiResponse!
+  }

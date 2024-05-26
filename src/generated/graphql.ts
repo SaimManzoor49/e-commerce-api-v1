@@ -24,6 +24,13 @@ export type ApiResponse = {
   status: Scalars['Int']['output'];
 };
 
+export type Category = {
+  __typename?: 'Category';
+  id: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
+  slug: Scalars['String']['output'];
+};
+
 export type LoginInput = {
   email?: InputMaybe<Scalars['String']['input']>;
   password: Scalars['String']['input'];
@@ -32,7 +39,11 @@ export type LoginInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  addCategory: Category;
   changePassword: ApiResponse;
+  createProduct: Product;
+  deleteCategory: ApiResponse;
+  deleteProduct: ApiResponse;
   getUserData?: Maybe<ApiResponse>;
   loginUser: ApiResponse;
   logoutUser: ApiResponse;
@@ -40,6 +51,13 @@ export type Mutation = {
   registerUser: ApiResponse;
   resetPassword: ApiResponse;
   resetPasswordVerify: Scalars['String']['output'];
+  updateCategory: Category;
+  updateProduct: Product;
+};
+
+
+export type MutationAddCategoryArgs = {
+  name: Scalars['String']['input'];
 };
 
 
@@ -47,6 +65,27 @@ export type MutationChangePasswordArgs = {
   confirmPassword: Scalars['String']['input'];
   newPassword: Scalars['String']['input'];
   token: Scalars['String']['input'];
+};
+
+
+export type MutationCreateProductArgs = {
+  category: Scalars['String']['input'];
+  description: Scalars['String']['input'];
+  imageUrl: Scalars['String']['input'];
+  name: Scalars['String']['input'];
+  price: Scalars['Float']['input'];
+  quantity: Scalars['Int']['input'];
+  shipping: Scalars['Boolean']['input'];
+};
+
+
+export type MutationDeleteCategoryArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type MutationDeleteProductArgs = {
+  id: Scalars['ID']['input'];
 };
 
 
@@ -79,9 +118,81 @@ export type MutationResetPasswordVerifyArgs = {
   token: Scalars['String']['input'];
 };
 
+
+export type MutationUpdateCategoryArgs = {
+  id: Scalars['ID']['input'];
+  name: Scalars['String']['input'];
+};
+
+
+export type MutationUpdateProductArgs = {
+  category?: InputMaybe<Scalars['String']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  id: Scalars['ID']['input'];
+  imageUrl?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  price?: InputMaybe<Scalars['Float']['input']>;
+  quantity?: InputMaybe<Scalars['Int']['input']>;
+  shipping?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+export type PaginatedProducts = {
+  __typename?: 'PaginatedProducts';
+  hasNext: Scalars['Boolean']['output'];
+  hasPrev: Scalars['Boolean']['output'];
+  next?: Maybe<Scalars['Int']['output']>;
+  pagingCounter: Scalars['Int']['output'];
+  prev?: Maybe<Scalars['Int']['output']>;
+  products: Array<Maybe<Product>>;
+  totalItems: Scalars['Int']['output'];
+  totalPages: Scalars['Int']['output'];
+};
+
+export type Product = {
+  __typename?: 'Product';
+  category: Scalars['String']['output'];
+  description: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  image?: Maybe<Scalars['String']['output']>;
+  name: Scalars['String']['output'];
+  price: Scalars['Float']['output'];
+  quantity: Scalars['Int']['output'];
+  shipping: Scalars['Boolean']['output'];
+  slug: Scalars['String']['output'];
+};
+
 export type Query = {
   __typename?: 'Query';
+  filterProduct: Array<Maybe<Product>>;
+  getAllCategories: Array<Maybe<Category>>;
+  getAllProducts: PaginatedProducts;
+  getSingleCategory: Category;
+  getSingleProduct: Product;
   getUser: ApiResponse;
+  searchProducts: Array<Maybe<Product>>;
+};
+
+
+export type QueryFilterProductArgs = {
+  category?: InputMaybe<Scalars['String']['input']>;
+  maxPrice?: InputMaybe<Scalars['Float']['input']>;
+  minPrice?: InputMaybe<Scalars['Float']['input']>;
+};
+
+
+export type QueryGetAllProductsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  page?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type QueryGetSingleCategoryArgs = {
+  slug: Scalars['String']['input'];
+};
+
+
+export type QueryGetSingleProductArgs = {
+  slug: Scalars['String']['input'];
 };
 
 
@@ -89,6 +200,11 @@ export type QueryGetUserArgs = {
   email?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['String']['input']>;
   username?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+export type QuerySearchProductsArgs = {
+  keyword: Scalars['String']['input'];
 };
 
 export type RegisterInput = {
@@ -189,15 +305,19 @@ export type ResolversTypes = {
   ApiResponse: ResolverTypeWrapper<ApiResponse>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
+  Category: ResolverTypeWrapper<Category>;
+  ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   LoginInput: LoginInput;
   Mutation: ResolverTypeWrapper<{}>;
+  Float: ResolverTypeWrapper<Scalars['Float']['output']>;
+  Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
+  PaginatedProducts: ResolverTypeWrapper<PaginatedProducts>;
+  Product: ResolverTypeWrapper<Product>;
   Query: ResolverTypeWrapper<{}>;
   RegisterInput: RegisterInput;
   ResetPasswordInput: ResetPasswordInput;
   User: ResolverTypeWrapper<User>;
-  ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   AdditionalEntityFields: AdditionalEntityFields;
-  Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -205,15 +325,19 @@ export type ResolversParentTypes = {
   ApiResponse: ApiResponse;
   String: Scalars['String']['output'];
   Int: Scalars['Int']['output'];
+  Category: Category;
+  ID: Scalars['ID']['output'];
   LoginInput: LoginInput;
   Mutation: {};
+  Float: Scalars['Float']['output'];
+  Boolean: Scalars['Boolean']['output'];
+  PaginatedProducts: PaginatedProducts;
+  Product: Product;
   Query: {};
   RegisterInput: RegisterInput;
   ResetPasswordInput: ResetPasswordInput;
   User: User;
-  ID: Scalars['ID']['output'];
   AdditionalEntityFields: AdditionalEntityFields;
-  Boolean: Scalars['Boolean']['output'];
 };
 
 export type UnionDirectiveArgs = {
@@ -270,8 +394,19 @@ export type ApiResponseResolvers<ContextType = any, ParentType extends Resolvers
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type CategoryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Category'] = ResolversParentTypes['Category']> = {
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
+  addCategory?: Resolver<ResolversTypes['Category'], ParentType, ContextType, RequireFields<MutationAddCategoryArgs, 'name'>>;
   changePassword?: Resolver<ResolversTypes['ApiResponse'], ParentType, ContextType, RequireFields<MutationChangePasswordArgs, 'confirmPassword' | 'newPassword' | 'token'>>;
+  createProduct?: Resolver<ResolversTypes['Product'], ParentType, ContextType, RequireFields<MutationCreateProductArgs, 'category' | 'description' | 'imageUrl' | 'name' | 'price' | 'quantity' | 'shipping'>>;
+  deleteCategory?: Resolver<ResolversTypes['ApiResponse'], ParentType, ContextType, RequireFields<MutationDeleteCategoryArgs, 'id'>>;
+  deleteProduct?: Resolver<ResolversTypes['ApiResponse'], ParentType, ContextType, RequireFields<MutationDeleteProductArgs, 'id'>>;
   getUserData?: Resolver<Maybe<ResolversTypes['ApiResponse']>, ParentType, ContextType, RequireFields<MutationGetUserDataArgs, 'token'>>;
   loginUser?: Resolver<ResolversTypes['ApiResponse'], ParentType, ContextType, RequireFields<MutationLoginUserArgs, 'input'>>;
   logoutUser?: Resolver<ResolversTypes['ApiResponse'], ParentType, ContextType>;
@@ -279,10 +414,43 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   registerUser?: Resolver<ResolversTypes['ApiResponse'], ParentType, ContextType, RequireFields<MutationRegisterUserArgs, 'input'>>;
   resetPassword?: Resolver<ResolversTypes['ApiResponse'], ParentType, ContextType, RequireFields<MutationResetPasswordArgs, 'input'>>;
   resetPasswordVerify?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationResetPasswordVerifyArgs, 'token'>>;
+  updateCategory?: Resolver<ResolversTypes['Category'], ParentType, ContextType, RequireFields<MutationUpdateCategoryArgs, 'id' | 'name'>>;
+  updateProduct?: Resolver<ResolversTypes['Product'], ParentType, ContextType, RequireFields<MutationUpdateProductArgs, 'id'>>;
+};
+
+export type PaginatedProductsResolvers<ContextType = any, ParentType extends ResolversParentTypes['PaginatedProducts'] = ResolversParentTypes['PaginatedProducts']> = {
+  hasNext?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  hasPrev?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  next?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  pagingCounter?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  prev?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  products?: Resolver<Array<Maybe<ResolversTypes['Product']>>, ParentType, ContextType>;
+  totalItems?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  totalPages?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type ProductResolvers<ContextType = any, ParentType extends ResolversParentTypes['Product'] = ResolversParentTypes['Product']> = {
+  category?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  image?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  price?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  quantity?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  shipping?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
+  filterProduct?: Resolver<Array<Maybe<ResolversTypes['Product']>>, ParentType, ContextType, Partial<QueryFilterProductArgs>>;
+  getAllCategories?: Resolver<Array<Maybe<ResolversTypes['Category']>>, ParentType, ContextType>;
+  getAllProducts?: Resolver<ResolversTypes['PaginatedProducts'], ParentType, ContextType, Partial<QueryGetAllProductsArgs>>;
+  getSingleCategory?: Resolver<ResolversTypes['Category'], ParentType, ContextType, RequireFields<QueryGetSingleCategoryArgs, 'slug'>>;
+  getSingleProduct?: Resolver<ResolversTypes['Product'], ParentType, ContextType, RequireFields<QueryGetSingleProductArgs, 'slug'>>;
   getUser?: Resolver<ResolversTypes['ApiResponse'], ParentType, ContextType, Partial<QueryGetUserArgs>>;
+  searchProducts?: Resolver<Array<Maybe<ResolversTypes['Product']>>, ParentType, ContextType, RequireFields<QuerySearchProductsArgs, 'keyword'>>;
 };
 
 export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
@@ -295,7 +463,10 @@ export type UserResolvers<ContextType = any, ParentType extends ResolversParentT
 
 export type Resolvers<ContextType = any> = {
   ApiResponse?: ApiResponseResolvers<ContextType>;
+  Category?: CategoryResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
+  PaginatedProducts?: PaginatedProductsResolvers<ContextType>;
+  Product?: ProductResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
 };
