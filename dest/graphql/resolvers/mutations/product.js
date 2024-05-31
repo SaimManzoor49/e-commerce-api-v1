@@ -20,13 +20,9 @@ const cloudinary_1 = require("../../../utils/cloudinary");
 const mailer_1 = require("../../../utils/mailer");
 const wishlist_model_1 = require("../../../model/wishlist.model");
 const slugify_1 = __importDefault(require("slugify"));
-const category_model_1 = require("../../../model/category.model");
 const Mutation = {
-    createProduct: (_1, _a) => __awaiter(void 0, [_1, _a], void 0, function* (_, { name, description, price, quantity, shipping, category, imageUrl }) {
-        var _b;
-        const categoryId = yield (category_model_1.Category.find({ name: category }));
+    createProduct: (_1, _a) => __awaiter(void 0, [_1, _a], void 0, function* (_, { name, description, price, quantity, shipping, category, imageUrls }) {
         const slug = (0, slugify_1.default)(name);
-        console.log(imageUrl);
         // const imageUrl = await uploadImagesOnCloudinary(image.path);
         try {
             const product = yield product_model_1.Product.create({
@@ -36,17 +32,18 @@ const Mutation = {
                 price,
                 quantity,
                 shipping,
-                image: imageUrl,
-                category: (_b = categoryId[0]) === null || _b === void 0 ? void 0 : _b._id,
+                images: imageUrls,
+                category,
             });
             return product;
         }
         catch (error) {
+            console.log(error);
             throw new apiError_1.ApiError(http_status_codes_1.StatusCodes.FORBIDDEN, error);
         }
     }),
-    updateProduct: (_2, _c) => __awaiter(void 0, [_2, _c], void 0, function* (_, { id, name, description, price, quantity, shipping, category, image }) {
-        var _d;
+    updateProduct: (_2, _b) => __awaiter(void 0, [_2, _b], void 0, function* (_, { id, name, description, price, quantity, shipping, category, image }) {
+        var _c;
         const product = yield product_model_1.Product.findById(id);
         const oldQuantity = product.quantity;
         if (!product)
@@ -68,7 +65,7 @@ const Mutation = {
                 product.category = category;
             if (image) {
                 if (product.image) {
-                    const publicId = (_d = product.image.split('/').pop()) === null || _d === void 0 ? void 0 : _d.split('.')[0];
+                    const publicId = (_c = product.image.split('/').pop()) === null || _c === void 0 ? void 0 : _c.split('.')[0];
                     if (publicId)
                         yield (0, cloudinary_1.deleteUploadedImageFromCloudinary)(publicId, image.path);
                 }
@@ -99,7 +96,7 @@ const Mutation = {
             throw new apiError_1.ApiError(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR, 'Failed to update product', error);
         }
     }),
-    deleteProduct: (_3, _e) => __awaiter(void 0, [_3, _e], void 0, function* (_, { id }) {
+    deleteProduct: (_3, _d) => __awaiter(void 0, [_3, _d], void 0, function* (_, { id }) {
         try {
             const deleteProduct = yield product_model_1.Product.findByIdAndDelete(id);
             if (deleteProduct)

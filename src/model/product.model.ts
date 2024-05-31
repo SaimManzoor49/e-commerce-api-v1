@@ -32,10 +32,10 @@ const productSchema = new Schema({
     shipping: {
         type: Boolean,
     },
-    image: {
+    image: [{
         type: String,
         required: true,
-    },
+    }],
 }, { timestamps: true })
 
 productSchema.plugin(aggregatePaginate)

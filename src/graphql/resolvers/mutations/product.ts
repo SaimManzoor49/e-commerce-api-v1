@@ -9,14 +9,13 @@ import { Wishlist } from '../../../model/wishlist.model';
 import { ProductType } from '../../../types/ProductType';
 import slugify from 'slugify';
 import { Category } from '../../../model/category.model';
+import { upload } from '../../../middleware/uploadImages.middleware';
 
 
 
 const Mutation = {
-    createProduct: async (_: any, { name, description, price, quantity, shipping, category, imageUrl }: any) => {
-        const categoryId: any = await (Category.find({ name: category }))
+    createProduct: async (_: any, { name, description, price, quantity, shipping, category, imageUrls }: any) => {
         const slug = slugify(name);
-        console.log(imageUrl)
         // const imageUrl = await uploadImagesOnCloudinary(image.path);
         try {
             const product = await Product.create({
@@ -26,11 +25,12 @@ const Mutation = {
                 price,
                 quantity,
                 shipping,
-                image: imageUrl,
-                category: categoryId[0]?._id,
+                images: imageUrls,
+                category,
             });
             return product;
         } catch (error: any) {
+            console.log(error)
             throw new ApiError(StatusCodes.FORBIDDEN, error);
         }
     },

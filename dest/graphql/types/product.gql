@@ -7,7 +7,7 @@
     price: Float!
     quantity: Int!
     shipping: Boolean!
-    image: String
+    images: [String]
     category: String!
   }
 
@@ -37,7 +37,7 @@
       quantity: Int!
       shipping: Boolean!
       category: String!
-      imageUrl: String!
+      imageUrls: [String!]!
     ): Product!
     updateProduct(
       id: ID!

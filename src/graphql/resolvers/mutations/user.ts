@@ -116,8 +116,6 @@ const Mutation = {
         },
     async loginUser(parent: any, args: LoginUserArgs, context: any, info: any) {
         try {
-
-
             const { email, username, password } = args.input
             if ((!email || email.trim().length <= 0) && (!username || username.trim().length <= 0))
                 throw new Error("Email or Username is required");

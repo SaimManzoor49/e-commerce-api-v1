@@ -36,7 +36,6 @@ function init() {
                 typeDefs,
                 resolvers: getGqlResolvers_1.default,
                 introspection: true,
-                // context: async({ req, res }:{ req:any, res:any }) => ({ req, res }),
             });
             const corsOptions = {
                 origin: [
@@ -75,7 +74,9 @@ function init() {
                 // GQL Server
                 yield gqlServer.start();
                 app.use("/graphql", handleAuth, (0, express4_1.expressMiddleware)(gqlServer, {
-                    context: (_a) => __awaiter(this, [_a], void 0, function* ({ req, res }) { return ({ req, res }); }),
+                    context: (_a) => __awaiter(this, [_a], void 0, function* ({ req, res }) {
+                        return ({ req, res });
+                    }),
                 }));
                 // HTTP Server
                 app.listen(PORT, () => {

@@ -60,10 +60,10 @@ const productSchema = new mongoose_1.Schema({
     shipping: {
         type: Boolean,
     },
-    image: {
-        type: String,
-        required: true,
-    },
+    image: [{
+            type: String,
+            required: true,
+        }],
 }, { timestamps: true });
 productSchema.plugin(mongoose_aggregate_paginate_v2_1.default);
 exports.Product = (0, mongoose_1.model)("Product", productSchema);

@@ -71,7 +71,7 @@ export type MutationChangePasswordArgs = {
 export type MutationCreateProductArgs = {
   category: Scalars['String']['input'];
   description: Scalars['String']['input'];
-  imageUrl: Scalars['String']['input'];
+  imageUrls: Array<Scalars['String']['input']>;
   name: Scalars['String']['input'];
   price: Scalars['Float']['input'];
   quantity: Scalars['Int']['input'];
@@ -153,7 +153,7 @@ export type Product = {
   category: Scalars['String']['output'];
   description: Scalars['String']['output'];
   id: Scalars['ID']['output'];
-  image?: Maybe<Scalars['String']['output']>;
+  images?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
   name: Scalars['String']['output'];
   price: Scalars['Float']['output'];
   quantity: Scalars['Int']['output'];
@@ -404,7 +404,7 @@ export type CategoryResolvers<ContextType = any, ParentType extends ResolversPar
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   addCategory?: Resolver<ResolversTypes['Category'], ParentType, ContextType, RequireFields<MutationAddCategoryArgs, 'name'>>;
   changePassword?: Resolver<ResolversTypes['ApiResponse'], ParentType, ContextType, RequireFields<MutationChangePasswordArgs, 'confirmPassword' | 'newPassword' | 'token'>>;
-  createProduct?: Resolver<ResolversTypes['Product'], ParentType, ContextType, RequireFields<MutationCreateProductArgs, 'category' | 'description' | 'imageUrl' | 'name' | 'price' | 'quantity' | 'shipping'>>;
+  createProduct?: Resolver<ResolversTypes['Product'], ParentType, ContextType, RequireFields<MutationCreateProductArgs, 'category' | 'description' | 'imageUrls' | 'name' | 'price' | 'quantity' | 'shipping'>>;
   deleteCategory?: Resolver<ResolversTypes['ApiResponse'], ParentType, ContextType, RequireFields<MutationDeleteCategoryArgs, 'id'>>;
   deleteProduct?: Resolver<ResolversTypes['ApiResponse'], ParentType, ContextType, RequireFields<MutationDeleteProductArgs, 'id'>>;
   getUserData?: Resolver<Maybe<ResolversTypes['ApiResponse']>, ParentType, ContextType, RequireFields<MutationGetUserDataArgs, 'token'>>;
@@ -434,7 +434,7 @@ export type ProductResolvers<ContextType = any, ParentType extends ResolversPare
   category?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  image?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  images?: Resolver<Maybe<Array<Maybe<ResolversTypes['String']>>>, ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   price?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   quantity?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
