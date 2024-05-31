@@ -40,6 +40,7 @@ async function init() {
             origin: [
                 'https://swaggy-api-v1.vercel.app',
                 'https://swaggy-e-comm.vercel.app',
+                'https://dashboard-swaggy.vercel.app',
                 'http://localhost:3000',// Add localhost with the appropriate port
             ],
             credentials: true, // Allow credentials (cookies, authorization headers, etc.)
