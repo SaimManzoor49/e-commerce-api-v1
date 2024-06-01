@@ -60,7 +60,7 @@ const productSchema = new mongoose_1.Schema({
     shipping: {
         type: Boolean,
     },
-    image: [{
+    images: [{
             type: String,
             required: true,
         }],

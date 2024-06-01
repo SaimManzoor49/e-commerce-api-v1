@@ -32,7 +32,7 @@ const productSchema = new Schema({
     shipping: {
         type: Boolean,
     },
-    image: [{
+    images: [{
         type: String,
         required: true,
     }],

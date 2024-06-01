@@ -1,6 +1,6 @@
 
   type Product {
-    id: ID!
+    _id: ID!
     name: String!
     slug: String!
     description: String!

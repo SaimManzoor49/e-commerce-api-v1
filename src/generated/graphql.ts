@@ -150,9 +150,9 @@ export type PaginatedProducts = {
 
 export type Product = {
   __typename?: 'Product';
+  _id: Scalars['ID']['output'];
   category: Scalars['String']['output'];
   description: Scalars['String']['output'];
-  id: Scalars['ID']['output'];
   images?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
   name: Scalars['String']['output'];
   price: Scalars['Float']['output'];
@@ -431,9 +431,9 @@ export type PaginatedProductsResolvers<ContextType = any, ParentType extends Res
 };
 
 export type ProductResolvers<ContextType = any, ParentType extends ResolversParentTypes['Product'] = ResolversParentTypes['Product']> = {
+  _id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   category?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   images?: Resolver<Maybe<Array<Maybe<ResolversTypes['String']>>>, ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   price?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
