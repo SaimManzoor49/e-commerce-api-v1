@@ -14,9 +14,12 @@ import { upload } from '../../../middleware/uploadImages.middleware';
 
 
 const Mutation = {
+    // createProduct: async (_: any,args: any) => {
     createProduct: async (_: any, { name, description, price, quantity, shipping, category, imageUrls }: any) => {
         const slug = slugify(name);
         // const imageUrl = await uploadImagesOnCloudinary(image.path);
+        // console.log(args)
+        // return
         try {
             const product = await Product.create({
                 name,
