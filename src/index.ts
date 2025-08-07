@@ -313,21 +313,23 @@ async function init() {
                 next();
             }
         }
-        // DB connection
-        await connectDB().then(async () => {
+       
+           //await connectDB().then
+             // DB connection
+       (async () => {
 
             // GQL Server
-            await gqlServer.start()
-            app.use("/graphql", handleAuth, expressMiddleware(gqlServer, {
-                context: async ({ req, res }:{req:any,res:any}) => {
-                    return({ req, res })
-                },
-              }))
+            // await gqlServer.start()
+            // app.use("/graphql", handleAuth, expressMiddleware(gqlServer, {
+            //     context: async ({ req, res }:{req:any,res:any}) => {
+            //         return({ req, res })
+            //     },
+            //   }))
             // HTTP Server
             app.listen(PORT, () => {
                 console.log('Server is listning on PORT: ', PORT)
             })
-        })
+        })()
     } catch (error) {
         console.log(error)
     }
